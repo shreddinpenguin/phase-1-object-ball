@@ -1,5 +1,5 @@
 function gameObject(){
-    let obj = {
+    return {
         away: {
             teamName: "Charlotte Hornets",
             colors: ["Turquoise", "Purple"],
@@ -58,7 +58,7 @@ function gameObject(){
         },
         home: {
             teamName: "Brooklyn Nets",
-            colors: ["Black", "WHite"],
+            colors: ["Black", "White"],
             players: {
                 "Allan Anderson": {
                     number: 0,
@@ -113,35 +113,92 @@ function gameObject(){
             },
         },
     } 
-    return obj
 }
-console.log(gameObject())
+const gameStats = gameObject()
+console.log(gameStats)
+homeTeam = gameStats["home"]["teamName"]
+awayTeam = gameStats["away"]["teamName"]
 
-function homeTeamName() {
-    let obj = gameObject()
-    return obj["home"]["teamName"]
-}
-console.log(homeTeamName())
-
-const home = gameObject().home
-const away = gameObject().away
+const home = gameStats.home
+const away = gameStats.away
 const allPlayers = {...home["players"], ...away["players"]}
 
-function numPointsScored(name) {
-    return allPlayers[name].points
-    //console.log(allPlayers)
+function numPointsScored(name){
+    if (gameStats.away.players[name]){
+        return gameStats.away.players[name].points
+    }
+    else if (gameStats.home.players[name]){
+        return gameStats.home.players[name].points
+    }
+    else {
+        return "player not found"
+    }
 }
-console.log(numPointsScored("Mason Plumlee"))
+console.log(numPointsScored("Jeff Adrien"))
 
-function shoeSize(name) {
-    return allPlayers[name].shoe
+function shoeSize(name){
+    if (gameStats.away.players[name]){
+        return gameStats.away.players[name].shoe
+    }
+    else if (gameStats.home.players[name]){
+        return gameStats.home.players[name].shoe
+    }
+    else {
+        return "player not found"
+    }
 }
 console.log(shoeSize("Jason Terry"))
 
-console.log(allTeams)
-
 function teamColors(teamName){
-    if obj
+    if (gameStats.away.teamName === teamName){
+        return gameStats.away.colors
+    }
+    else if (gameStats.home.teamName === teamName){
+        return gameStats.home.colors
+    }
+    else {
+        return "team not found"
     }
 }
 console.log(teamColors("Brooklyn Nets"))
+console.log(teamColors("Charlotte Hornets"))
+
+function teamNames() {
+    const teamNames = []
+    teamNames.push(gameStats.away.teamName)
+    teamNames.push(gameStats.home.teamName)
+    return teamNames
+}
+// function teamNames(){
+//     return [homeTeam.teamName, awayTeam.teamName]
+// }
+console.log(teamNames())
+
+function playerNumbers(name){
+    let teamPlayers = (home.teamName === name) ? home.players : away.players
+    let playerNum = []
+    for (let player in teamPlayers){
+        playerNum.push(teamPlayers[player].number)
+    }
+    return playerNum
+}
+console.log(playerNumbers("Charlotte Hornets"))
+console.log(playerNumbers("Brooklyn Nets"))
+
+function playerStats(name){
+    return allPlayers[name]
+}
+console.log(playerStats("Jason Terry"))
+
+function bigShoe(){
+    let bigPlayer = {shoe: 0, player: null}
+    for (let x in allPlayers){
+        if (allPlayers[x].shoe > bigPlayer.shoe){
+            bigPlayer.shoe = allPlayers[x].shoe
+            bigPlayer.player = x
+        }
+    }
+    return bigPlayer
+}
+console.log(bigShoe())
+// => { shoe: 19, player: 'Mason Plumlee' }
